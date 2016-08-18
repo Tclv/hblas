@@ -74,10 +74,10 @@ module Numerical.HBLAS.BLAS.Level1(
         ,sdsdot
         ,dsdot
 
-        ,cdotu
-        ,cdotc
-        ,zdotu
-        ,zdotc
+        --,cdotu
+        --,cdotc
+        --,zdotu
+        --,zdotc
 
         ,snrm2
         ,dnrm2
@@ -87,14 +87,20 @@ module Numerical.HBLAS.BLAS.Level1(
         ,srot
         ,drot
 
-        ,srotg
-        ,drotg
+        {-
+         -,srotg
+         -,drotg
+         -}
 
-        ,srotm
-        ,drotm
+        {-
+         -,srotm
+         -,drotm
+         -}
 
-        ,srotmg
-        ,drotmg
+        {-
+         -,srotmg
+         -,drotmg
+         -}
 
         ,sscal
         ,dscal
@@ -171,17 +177,19 @@ sdsdot = scalarDotAbstraction "sdsdot" cblas_sdsdot_safe cblas_sdsdot_unsafe wit
 dsdot :: PrimMonad m => NoScalarDotFun Float (PrimState m) m Double
 dsdot = noScalarDotAbstraction "dsdot" cblas_dsdot_safe cblas_dsdot_unsafe
 
-cdotu :: PrimMonad m => ComplexDotFun (Complex Float) (PrimState m) m
-cdotu = complexDotAbstraction "cdotu" cblas_cdotu_safe cblas_cdotu_unsafe
-
-cdotc :: PrimMonad m => ComplexDotFun (Complex Float) (PrimState m) m
-cdotc = complexDotAbstraction "cdotc" cblas_cdotc_safe cblas_cdotc_unsafe
-
-zdotu :: PrimMonad m => ComplexDotFun (Complex Double) (PrimState m) m
-zdotu = complexDotAbstraction "zdotu" cblas_zdotu_safe cblas_zdotu_unsafe
-
-zdotc :: PrimMonad m => ComplexDotFun (Complex Double) (PrimState m) m
-zdotc = complexDotAbstraction "zdotc" cblas_zdotc_safe cblas_zdotc_unsafe
+{-
+ -cdotu :: PrimMonad m => ComplexDotFun (Complex Float) (PrimState m) m
+ -cdotu = complexDotAbstraction "cdotu" cblas_cdotu_safe cblas_cdotu_unsafe
+ -
+ -cdotc :: PrimMonad m => ComplexDotFun (Complex Float) (PrimState m) m
+ -cdotc = complexDotAbstraction "cdotc" cblas_cdotc_safe cblas_cdotc_unsafe
+ -
+ -zdotu :: PrimMonad m => ComplexDotFun (Complex Double) (PrimState m) m
+ -zdotu = complexDotAbstraction "zdotu" cblas_zdotu_safe cblas_zdotu_unsafe
+ -
+ -zdotc :: PrimMonad m => ComplexDotFun (Complex Double) (PrimState m) m
+ -zdotc = complexDotAbstraction "zdotc" cblas_zdotc_safe cblas_zdotc_unsafe
+ -}
 
 snrm2 :: PrimMonad m => Nrm2Fun Float (PrimState m) m Float
 snrm2 = norm2Abstraction "snrm2" cblas_snrm2_safe cblas_snrm2_unsafe
@@ -201,23 +209,29 @@ srot = rotAbstraction "srot" cblas_srot_safe cblas_srot_unsafe
 drot :: PrimMonad m => RotFun Double (PrimState m) m
 drot = rotAbstraction "drot" cblas_drot_safe cblas_drot_unsafe
 
-srotg :: PrimMonad m => RotgFun Float (PrimState m) m
-srotg = rotgAbstraction "srotg" cblas_srotg_safe cblas_srotg_unsafe
+{-
+ -srotg :: PrimMonad m => RotgFun Float (PrimState m) m
+ -srotg = rotgAbstraction "srotg" cblas_srotg_safe cblas_srotg_unsafe
+ -
+ -drotg :: PrimMonad m => RotgFun Double (PrimState m) m
+ -drotg = rotgAbstraction "drotg" cblas_drotg_safe cblas_drotg_unsafe
+ -}
 
-drotg :: PrimMonad m => RotgFun Double (PrimState m) m
-drotg = rotgAbstraction "drotg" cblas_drotg_safe cblas_drotg_unsafe
+{-
+ -srotm :: PrimMonad m => RotmFun Float (PrimState m) m
+ -srotm = rotmAbstraction "srotm" cblas_srotm_safe cblas_srotm_unsafe
+ -
+ -drotm :: PrimMonad m => RotmFun Double (PrimState m) m
+ -drotm = rotmAbstraction "drotm" cblas_drotm_safe cblas_drotm_unsafe
+ -}
 
-srotm :: PrimMonad m => RotmFun Float (PrimState m) m
-srotm = rotmAbstraction "srotm" cblas_srotm_safe cblas_srotm_unsafe
-
-drotm :: PrimMonad m => RotmFun Double (PrimState m) m
-drotm = rotmAbstraction "drotm" cblas_drotm_safe cblas_drotm_unsafe
-
-srotmg :: PrimMonad m => RotmgFun Float (PrimState m) m
-srotmg = rotmgAbstraction "srotmg" cblas_srotmg_safe cblas_srotmg_unsafe
-
-drotmg :: PrimMonad m => RotmgFun Double (PrimState m) m
-drotmg = rotmgAbstraction "drotmg" cblas_drotmg_safe cblas_drotmg_unsafe
+{-
+ -srotmg :: PrimMonad m => RotmgFun Float (PrimState m) m
+ -srotmg = rotmgAbstraction "srotmg" cblas_srotmg_safe cblas_srotmg_unsafe
+ -
+ -drotmg :: PrimMonad m => RotmgFun Double (PrimState m) m
+ -drotmg = rotmgAbstraction "drotmg" cblas_drotmg_safe cblas_drotmg_unsafe
+ -}
 
 sscal :: PrimMonad m => ScalFun Float Float (PrimState m) m
 sscal = scalAbstraction "sscal" cblas_sscal_safe cblas_sscal_unsafe (\x f -> f x )

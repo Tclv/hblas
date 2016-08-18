@@ -3,6 +3,7 @@
 module Numerical.HBLAS.UtilsFFI( withAllocaPrim
   , unsafeWithPrim
   , withRStorable_
+  , withRStorable
   , storablePtrZero )  where
 
 
@@ -103,4 +104,3 @@ unsafeWithPurePrimLen v fun =   case S.unsafeToForeignPtr0 v of
                         res <-  withForeignPtrPrim fp (\x -> fun (x,n))
                         touchForeignPtrPrim fp
                         return res
-

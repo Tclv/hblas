@@ -9,9 +9,9 @@ module Numerical.HBLAS.BLAS.Internal.Level1(
   ,ComplexDotFun
   ,Nrm2Fun
   ,RotFun
-  ,RotgFun
-  ,RotmFun
-  ,RotmgFun
+  --,RotgFun
+  --,RotmFun
+  --,RotmgFun
   ,ScalFun
   ,SwapFun
   ,IamaxFun
@@ -22,12 +22,12 @@ module Numerical.HBLAS.BLAS.Internal.Level1(
   ,copyAbstraction
   ,noScalarDotAbstraction
   ,scalarDotAbstraction
-  ,complexDotAbstraction
+--  ,complexDotAbstraction
   ,norm2Abstraction
   ,rotAbstraction
-  ,rotgAbstraction
-  ,rotmAbstraction
-  ,rotmgAbstraction
+--  ,rotgAbstraction
+--  ,rotmAbstraction
+--  ,rotmgAbstraction
   ,scalAbstraction
   ,swapAbstraction
   ,iamaxAbstraction
@@ -154,25 +154,27 @@ scalarDotAbstraction dotName dotSafeFFI dotUnsafeFFI intConstHandler scaleConstH
           scaleConstHandler sb $ \sbPtr ->
             do unsafePrimToPrim $! (if shouldCallFast n then dotUnsafeFFI else dotSafeFFI) nPtr sbPtr ap incaPtr bp incbPtr
 
-{-# NOINLINE complexDotAbstraction #-}
-complexDotAbstraction :: (SM.Storable el, PrimMonad m, Show el) => String ->
-  ComplexDotFunFFI el -> ComplexDotFunFFI el ->
-  ComplexDotFun el (PrimState m) m
-complexDotAbstraction dotName dotSafeFFI dotUnsafeFFI = dot
-  where
-    shouldCallFast :: Int -> Bool
-    shouldCallFast n = flopsThreshold >= fromIntegral n
-    dot n
-      (MutableDenseVector _ adim astride abuff)
-      (MutableDenseVector _ bdim bstride bbuff)
-      --(MutableValue resbuff)
-        | isVectorBadWithNIncrement adim n astride = error $! vectorBadInfo dotName "first matrix" adim n astride
-        | isVectorBadWithNIncrement bdim n bstride = error $! vectorBadInfo dotName "second matrix" bdim n bstride
-        | otherwise =
-          unsafeWithPrim abuff $ \ap ->
-          unsafeWithPrim bbuff $ \bp ->
-          unsafeWithPrim resbuff $ \resPtr ->
-            do unsafePrimToPrim $! (if shouldCallFast n then dotUnsafeFFI else dotSafeFFI) (fromIntegral n) ap (fromIntegral astride) bp (fromIntegral bstride) resPtr
+{-
+ -# NOINLINE complexDotAbstraction #
+ -complexDotAbstraction :: (SM.Storable el, PrimMonad m, Show el) => String ->
+ -  ComplexDotFunFFI el -> ComplexDotFunFFI el ->
+ -  ComplexDotFun el (PrimState m) m
+ -complexDotAbstraction dotName dotSafeFFI dotUnsafeFFI = dot
+ -  where
+ -    shouldCallFast :: Int -> Bool
+ -    shouldCallFast n = flopsThreshold >= fromIntegral n
+ -    dot n
+ -      (MutableDenseVector _ adim astride abuff)
+ -      (MutableDenseVector _ bdim bstride bbuff)
+ -      (MutableValue resbuff)
+ -        | isVectorBadWithNIncrement adim n astride = error $! vectorBadInfo dotName "first matrix" adim n astride
+ -        | isVectorBadWithNIncrement bdim n bstride = error $! vectorBadInfo dotName "second matrix" bdim n bstride
+ -        | otherwise =
+ -          unsafeWithPrim abuff $ \ap ->
+ -          unsafeWithPrim bbuff $ \bp ->
+ -          unsafeWithPrim resbuff $ \resPtr ->
+ -            do unsafePrimToPrim $! (if shouldCallFast n then dotUnsafeFFI else dotSafeFFI) (fromIntegral n) ap (fromIntegral astride) bp (fromIntegral bstride) resPtr
+ -}
 
 {-# NOINLINE norm2Abstraction #-}
 norm2Abstraction :: (SM.Storable el, PrimMonad m, Show el) => String ->
